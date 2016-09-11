@@ -30,6 +30,7 @@ newTemplate dir pkg msgFiles = do
     tFileName     = joinPath [dir, unpack (pkgName (meta pkg)) ++ ".hsfiles"]
     tBuilder deps = cabalBuilder pkg msgFiles
                  <> mconcat (msgBuilder pkg <$> zip msgFiles deps)
+                 <> stackBuilder
 
 upperFirst :: Text -> Text
 upperFirst x  = toUpper (T.take 1 x) <> T.drop 1 x
@@ -111,7 +112,6 @@ msgBuilder pkg (msgFile, deps) =
     <> "\nimport           Data.Binary (Binary)"
     <> "\nimport           Data.Data (Data)"
     <> "\nimport qualified Data.ByteString as BS"
-    <> "\nimport qualified Lens.Family2 as L"
     <> "\nimport qualified Data.Word as W"
     <> "\nimport qualified Data.Int as I"
     <> "\nimport qualified Prelude as P"
@@ -133,3 +133,13 @@ msgBuilder pkg (msgFile, deps) =
                 <> messageName m
                 <> " as "
                 <> messageName m
+
+stackBuilder :: Builder
+stackBuilder = "\n{-# START_FILE stack.yaml #-}"
+            <> "\nresolver: lts-6.16"
+            <> "\npackages:"
+            <> "\n- '.'"
+            <> "\nextra-deps:"
+            <> "\n- rosmsg-0.5.0.0"
+            <> "\nflags: {}"
+            <> "\nextra-package-dbs: []"

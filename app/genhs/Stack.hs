@@ -11,7 +11,7 @@ import Stack.Types.Config
 import Stack.Config
 import Stack.New
 
-newPackage :: FilePath -> T.Text -> String -> IO ()
+newPackage :: FilePath -> T.Text -> String -> IO FilePath
 newPackage dir name templatePath = do
     case parseTemplateNameFromString templatePath of
         Left e -> error e
@@ -20,7 +20,7 @@ newPackage dir name templatePath = do
                              runStackWith manager config $ do
                                 n <- parsePackageName (sanitize name)
                                 new (NewOpts n False (Just template) mempty) False 
-    return ()
+                                return (T.unpack (sanitize name))
   where
     loadConfigWith m = lcConfig <$>
         runStackLoggingT m logging False False
