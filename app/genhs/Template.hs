@@ -30,7 +30,7 @@ newTemplate dir pkg msgFiles = do
     tFileName     = joinPath [dir, unpack (pkgName (meta pkg)) ++ ".hsfiles"]
     tBuilder deps = cabalBuilder pkg msgFiles
                  <> mconcat (msgBuilder pkg <$> zip msgFiles deps)
-                 <> stackBuilder
+                 <> stackBuilder pkg
 
 upperFirst :: Text -> Text
 upperFirst x  = toUpper (T.take 1 x) <> T.drop 1 x
@@ -134,12 +134,16 @@ msgBuilder pkg (msgFile, deps) =
                 <> " as "
                 <> messageName m
 
-stackBuilder :: Builder
-stackBuilder = "\n{-# START_FILE stack.yaml #-}"
-            <> "\nresolver: lts-6.16"
-            <> "\npackages:"
-            <> "\n- '.'"
-            <> "\nextra-deps:"
-            <> "\n- rosmsg-0.5.0.0"
-            <> "\nflags: {}"
-            <> "\nextra-package-dbs: []"
+stackBuilder :: Package -> Builder
+stackBuilder pkg =
+    "\n{-# START_FILE stack.yaml #-}"
+  <> "\nresolver: lts-6.16"
+  <> "\npackages:"
+  <> "\n- '.'"
+  <> mconcat ((\p -> "\n- '../" <> fromText (sanitize p) <> "'") <$> deps)
+  <> "\nextra-deps:"
+  <> "\n- rosmsg-0.5.0.0"
+  <> "\nflags: {}"
+  <> "\nextra-package-dbs: []"
+  where deps     = filter (elem "msgs" . T.tails) (pkgBuildDeps (meta pkg)) 
+        sanitize = replace "_" "-"
