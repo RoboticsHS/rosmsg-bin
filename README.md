@@ -49,3 +49,28 @@
     CameraInfo {_header = Header {_seq = 0, _stamp = (0,0), _frame_id = ""}, _height = 0, _width = 0, _distortion_model = "", _d = ROSArray {unArray = []}, _k = ROSFixedArray {unFixedArray = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]}, _r = ROSFixedArray {unFixedArray = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]}, _p = ROSFixedArray {unFixedArray = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]}, _binning_x = 0, _binning_y = 0, _roi = RegionOfInterest {_x_offset = 0, _y_offset = 0, _height = 0, _width = 0, _do_rectify = False}}
     > getDigest m
     c9a58c1b0b154e0e6da7578cb991d214
+
+### Play with Lens
+
+    > import Lens.Family2
+
+    > import Robotics.ROS.Msg.Geometry_msgs.Vector3 as V
+    > let v = def :: Vector3
+    > view V.x v
+    0.0
+    > over V.x (+ 1) v
+    Vector3 {_x = 1.0, _y = 0.0, _z = 0.0}
+
+    > import Robotics.ROS.Msg.Geometry_msgs.PoseWithCovarianceStamped as PCS
+    > import Robotics.ROS.Msg.Geometry_msgs.PoseWithCovariance as PC
+    > import Robotics.ROS.Msg.Geometry_msgs.Pose as Pose
+
+    > let p = def :: PoseWithCovarianceStamped
+    > view (PCS.pose . PC.covariance ) p
+    ROSFixedArray {unFixedArray = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]}
+
+    > PCS.pose . PC.pose . Pose.orientation . w .~ 1 $ p
+    PoseWithCovarianceStamped {_header = Header {_seq = 0, _stamp = (0,0), _frame_id = ""}, _pose = PoseWithCovariance {_pose = Pose {_position = Point {_x = 0.0, _y = 0.0, _z = 0.0}, _orientation = Quaternion {_x = 0.0, _y = 0.0, _z = 0.0, _w = 1.0}}, _covariance = ROSFixedArray {unFixedArray = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]}}}
+
+    > PCS.header . frame_id  .~ "base_link" $ p
+    PoseWithCovarianceStamped {_header = Header {_seq = 0, _stamp = (0,0), _frame_id = "base_link"}, _pose = PoseWithCovariance {_pose = Pose {_position = Point {_x = 0.0, _y = 0.0, _z = 0.0}, _orientation = Quaternion {_x = 0.0, _y = 0.0, _z = 0.0, _w = 0.0}}, _covariance = ROSFixedArray {unFixedArray = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]}}}
