@@ -72,7 +72,7 @@ matrix:
         - libgmp-dev
     compiler: ! ': # Stack LTS'
   allow_failures:
-  - env: GHCVER=head CABALVER=1.24
+  - env: GHCVER=head   CABALVER=1.24
 
 branches:
   only:
