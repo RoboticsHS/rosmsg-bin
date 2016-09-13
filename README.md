@@ -1,6 +1,11 @@
 # ROS message generator binaries 
 
 [![Build Status](https://travis-ci.org/RoboticsHS/rosmsg-bin.svg?branch=master)](https://travis-ci.org/RoboticsHS/rosmsg-bin)
+[![Build status](https://ci.appveyor.com/api/projects/status/nfudcbex8l0bwvwl?svg=true)](https://ci.appveyor.com/project/akru/rosmsg-bin)
+![Hackage](https://img.shields.io/hackage/v/rosmsg-bin.svg)
+![Hackage Dependencies](https://img.shields.io/hackage-deps/v/rosmsg-bin.svg)
+![Haskell Programming Language](https://img.shields.io/badge/language-Haskell-blue.svg)
+![BSD3 License](http://img.shields.io/badge/license-BSD3-brightgreen.svg)
 
 > This use [rosmsg](https://github.com/RoboticsHS/rosmsg) and [rospkg](https://github.com/RoboticsHS/rospkg) libraries for browsing and generate Haskell native package from ROS message package.
 
