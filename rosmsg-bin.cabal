@@ -1,5 +1,5 @@
 name:                rosmsg-bin
-version:             0.1.0.0
+version:             0.2.0.0
 synopsis:            ROS message management tools
 description:         Please see README.md
 homepage:            https://github.com/RoboticsHS/rosmsg-bin#readme
@@ -30,7 +30,7 @@ executable genhs
                      , text
                      , stack    >= 1.1
                      , rospkg   >= 0.2.3
-                     , rosmsg   >= 0.5.1
+                     , rosmsg   >= 0.5.2
                      , filepath
                      , temporary
                      , monad-logger
